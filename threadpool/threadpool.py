@@ -1,5 +1,5 @@
 #
-# threadpool.py
+# threadpool/__init__.py
 #
 
 # license--start
