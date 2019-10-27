@@ -117,6 +117,26 @@ class ThreadPool:
         self.enabled = True
         self._schedule()
 
+    def get_ndone(self):
+        """Return number of completed tasks are waiting to be reaped.
+        """
+        return self.doneq.qsize()
+
+    def get_nrunning(self):
+        """Return number of running tasks.
+        """
+        return len(self.runs)
+
+    def get_nwaiting(self):
+        """Return number of waiting tasks.
+        """
+        return self.waitq.qsize()
+
+    def get_nworkers(self):
+        """Return number of workers.
+        """
+        return self.nworkers
+
     def has_done(self):
         """Return True is a task is done and ready to be reaped.
         """
@@ -137,6 +157,11 @@ class ThreadPool:
         running, or done state.
         """
         return not (self.has_waiting() or self.has_running() or self.has_done())
+
+    def is_enabled(self):
+        """Returns whether the scheduler is enabled.
+        """
+        return self.enabled
 
     def reap(self, block=True, timeout=None):
         """Reap result returning (key, value).
