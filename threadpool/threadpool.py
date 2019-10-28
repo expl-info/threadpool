@@ -78,7 +78,10 @@ class ThreadPool:
             self.schedlock.acquire()
             if self.enabled:
                 while not self.waitq.empty() and len(self.runs) < self.nworkers:
-                    th = threading.Thread(target=_worker, args=self.waitq.get())
+                    args = self.waitq.get()
+                    key = args[0]
+                    key = key and str(key)
+                    th = threading.Thread(target=_worker, name=key, args=args)
                     self.runs.add(th)
                     th.start()
         finally:
